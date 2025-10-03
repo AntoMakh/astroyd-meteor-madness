@@ -3,14 +3,13 @@ Configuration settings for the NASA Meteor Simulator
 """
 
 from pydantic_settings import BaseSettings
-from pydantic import Field
 from typing import Optional
 import os
 
 class Settings(BaseSettings):
 	"""Application settings"""
 	# Database
-	DATABASE_URL: str = Field(default="sqlite:///./meteor_madness.db", env="DATABASE_URL")
+	DATABASE_URL: str = "postgresql://user:password@localhost:5432/meteor_simulator"
 	REDIS_URL: str = "redis://localhost:6379/0"
 	# NASA API Configuration
 	NASA_API_KEY: Optional[str] = None
@@ -36,10 +35,6 @@ class Settings(BaseSettings):
 	EARTH_RADIUS: float = 6371000.0  # meters
 	EARTH_MASS: float = 5.972e24  # kg
 	GRAVITATIONAL_CONSTANT: float = 6.67430e-11  # m³/kg/s²
-	# Game Settings
-	DEFLECTION_GAME_MAX_SCORE: int = 10000
-	LEADERBOARD_SIZE: int = 100
-	
 	class Config:
 		env_file = ".env"
 		case_sensitive = True

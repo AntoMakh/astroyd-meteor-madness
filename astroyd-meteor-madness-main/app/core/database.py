@@ -1,8 +1,8 @@
 """
-Enhanced database configuration with all models
+Database configuration and connection management
 """
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
@@ -17,8 +17,11 @@ engine = create_engine(
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Base class for models
+# Create base class for models
 Base = declarative_base()
+
+# Metadata for database operations
+metadata = MetaData()
 
 def get_db():
     """Dependency to get database session"""
@@ -27,17 +30,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-def create_tables():
-    """Create all database tables"""
-    # Import all models to ensure they're registered
-    from app.core.models import (
-        User, Simulation, DeflectionGameScoreDB, 
-        SimulationExport, UserSession, SystemLog
-    )
-    
-    Base.metadata.create_all(bind=engine)
-
-def drop_tables():
-    """Drop all database tables"""
-    Base.metadata.drop_all(bind=engine)

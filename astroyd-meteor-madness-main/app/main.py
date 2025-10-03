@@ -1,4 +1,5 @@
 """
+NASA Meteor Simulator Backend
 Main FastAPI application entry point
 """
 
@@ -11,20 +12,20 @@ from dotenv import load_dotenv
 
 from app.core.config import settings
 from app.api.v1.api import api_router
-from app.core.database import create_tables
+from app.core.database import engine, Base
 
 # Load environment variables
 load_dotenv()  # .env
 load_dotenv(".env.local", override=True)  # optional local overrides
 
 # Create database tables
-create_tables()
+Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI(
     title="NASA Meteor Simulator API",
-    description="Enhanced backend API for meteor impact simulation with NASA data integration, trajectory modeling, and deflection game",
-    version="2.0.0",
+    description="Backend API for meteor impact simulation with NASA data integration",
+    version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -46,30 +47,21 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 async def root():
     """Root endpoint with API information"""
     return {
-        "message": "NASA Meteor Simulator API v2.0",
-        "version": "2.0.0",
+        "message": "NASA Meteor Simulator API",
+        "version": "1.0.0",
         "docs": "/docs",
-        "status": "operational",
-        "features": [
-            "Enhanced impact simulation",
-            "Trajectory modeling", 
-            "Environmental impact zones",
-            "NEO-based asteroid modeling",
-            "Deflection game with leaderboards",
-            "Mitigation solutions",
-            "NASA CAD/Sentry integration"
-        ]
+        "status": "operational"
     }
 
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "service": "meteor-simulator", "version": "2.0.0"}
+    return {"status": "healthy", "service": "meteor-simulator"}
 
 @app.get("/version")
 async def version():
     """Version and mode endpoint"""
-    return {"version": "2.0.0", "demo_mode": settings.DEMO_MODE}
+    return {"version": "1.0.0", "demo_mode": settings.DEMO_MODE}
 
 if __name__ == "__main__":
     uvicorn.run(

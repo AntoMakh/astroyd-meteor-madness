@@ -1,11 +1,10 @@
 """
-Enhanced NASA data API endpoints with CAD, Sentry, and NEO modeling
+NASA data API endpoints
 """
 
 from fastapi import APIRouter, HTTPException, Query
 from typing import Dict, Any, Optional
 from app.nasa.client import nasa_client
-from app.models.impact import Asteroid
 
 router = APIRouter()
 
@@ -21,25 +20,6 @@ async def get_asteroid_data(asteroid_id: str):
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching asteroid data: {str(e)}")
-
-@router.get("/asteroid/{asteroid_id}/model")
-async def get_asteroid_model(asteroid_id: str):
-    """
-    Get modeled asteroid from NEO data
-    """
-    try:
-        neo_data = await nasa_client.get_asteroid_data(asteroid_id)
-        if not neo_data:
-            raise HTTPException(status_code=404, detail="Asteroid data not found")
-        
-        asteroid = await nasa_client.model_asteroid_from_neo(neo_data)
-        return {
-            "asteroid_id": asteroid_id,
-            "neo_data": neo_data,
-            "modeled_asteroid": asteroid.dict()
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error modeling asteroid: {str(e)}")
 
 @router.get("/earth-imagery")
 async def get_earth_imagery(
@@ -103,58 +83,6 @@ async def get_sentry(
         return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching Sentry data: {str(e)}")
-
-@router.get("/nearby-objects")
-async def get_nearby_objects(
-    latitude: float = Query(..., description="Latitude"),
-    longitude: float = Query(..., description="Longitude"),
-    radius_km: float = Query(1000, description="Search radius in km"),
-    days_ahead: int = Query(30, description="Days to look ahead")
-):
-    """
-    Get nearby NEOs that could potentially impact near given coordinates
-    """
-    try:
-        from datetime import datetime, timedelta
-        
-        # Get CAD data for nearby objects
-        date_min = datetime.utcnow().strftime("%Y-%m-%d")
-        date_max = (datetime.utcnow() + timedelta(days=days_ahead)).strftime("%Y-%m-%d")
-        
-        cad_params = {
-            "neo": "true",
-            "date-min": date_min,
-            "date-max": date_max,
-            "dist-max": "0.1",  # Within 0.1 AU
-            "limit": 100
-        }
-        
-        cad_data = await nasa_client.get_cad(cad_params)
-        
-        # Filter by proximity to given coordinates (simplified)
-        nearby_objects = []
-        if cad_data.get("data"):
-            for obj in cad_data["data"]:
-                # This is a simplified proximity check
-                # In reality, you'd calculate actual impact probability
-                nearby_objects.append({
-                    "designation": obj.get("des", "Unknown"),
-                    "close_approach_date": obj.get("cd", "Unknown"),
-                    "miss_distance_km": float(obj.get("dist", 0)) * 149597870.7,  # Convert AU to km
-                    "relative_velocity_kmh": float(obj.get("v_rel", 0)),
-                    "diameter_estimate": obj.get("diameter", "Unknown"),
-                    "hazardous": obj.get("pha", "N") == "Y"
-                })
-        
-        return {
-            "search_location": {"latitude": latitude, "longitude": longitude},
-            "search_radius_km": radius_km,
-            "days_ahead": days_ahead,
-            "nearby_objects": nearby_objects,
-            "total_found": len(nearby_objects)
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error finding nearby objects: {str(e)}")
 
 @router.get("/earth-observation")
 async def get_earth_observation_data(

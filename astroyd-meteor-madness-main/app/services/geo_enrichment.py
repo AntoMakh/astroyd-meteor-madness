@@ -1,5 +1,5 @@
 """
-Geographic enrichment service using NASA/USGS data
+Geographic enrichment service using NASA/USGS/SEDAC-like data
 """
 
 from typing import Dict, Any
@@ -22,6 +22,7 @@ class GeoEnrichmentService:
 		soil_type = terrain_data.get("soil_type", location.soil_type)
 		terrain_hint = terrain_data.get("terrain_type")
 
+		# Infer terrain type if not specified
 		terrain_type = location.terrain_type
 		if not terrain_type and terrain_hint:
 			terrain_type = TerrainType(terrain_hint) if terrain_hint in [t.value for t in TerrainType] else TerrainType.LAND
