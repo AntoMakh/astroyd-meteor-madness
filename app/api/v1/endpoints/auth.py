@@ -81,6 +81,7 @@ async def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
         
         # Create new user
         hashed_password = get_password_hash(user_data.password)
+        print(f"DEBUG: Hashing password for {user_data.username}. Hash: {hashed_password}")  # DEBUG LOG
         user = User(
             username=user_data.username,
             email=user_data.email,
@@ -114,9 +115,11 @@ async def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
 async def login_user(login_data: UserLogin, db: Session = Depends(get_db)):
     """Authenticate user and return tokens"""
     try:
+        print(f"DEBUG: Attempting login for user '{login_data.username}' with password '{login_data.password}'") # DEBUG LOG
         # Authenticate user
         user = authenticate_user(db, login_data.username, login_data.password)
         if not user:
+            print("DEBUG: Authentication failed. authenticate_user returned None.") # DEBUG LOG
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",

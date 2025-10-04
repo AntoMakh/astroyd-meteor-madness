@@ -181,6 +181,7 @@ class SimulationResponse(BaseModel):
 	asteroid: Asteroid
 	impact_location: ImpactLocation
 	impact_result: ImpactResult
+	damage_assessment: DamageAssessment
 	mitigation_result: Optional[MitigationResult] = Field(None, description="Mitigation results if applied")
 	trajectory: Optional[List[TrajectoryPoint]] = Field(None, description="Asteroid trajectory")
 	warnings: List[Warning] = Field(default_factory=list, description="System warnings")

@@ -7,7 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import uvicorn
 import os
+import logging
 from dotenv import load_dotenv
+from contextlib import asynccontextmanager
 
 from app.core.config import settings
 from app.api.v1.api import api_router
@@ -17,8 +19,16 @@ from app.core.database import create_tables
 load_dotenv()  # .env
 load_dotenv(".env.local", override=True)  # optional local overrides
 
-# Create database tables
-create_tables()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # On startup
+    print("INFO:     Starting up and creating database tables...")
+    create_tables()
+    yield
+    # On shutdown
+    print("INFO:     Shutting down...")
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -26,7 +36,8 @@ app = FastAPI(
     description="Enhanced backend API for meteor impact simulation with NASA data integration, trajectory modeling, and deflection game",
     version="2.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # CORS middleware
@@ -76,5 +87,6 @@ if __name__ == "__main__":
         "app.main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True
+        reload=True,
+        reload_excludes=["*.db"]
     )

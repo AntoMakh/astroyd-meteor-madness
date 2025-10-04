@@ -5,7 +5,7 @@ pydantic==2.5.0
 pydantic-settings==2.1.0
 
 # Scientific Computing
-numpy==1.24.3
+numpy==1.26.4
 scipy==1.11.4
 pandas==2.1.4
 scikit-learn==1.3.2
@@ -37,8 +37,8 @@ netCDF4==1.6.5
 h5py==3.10.0
 
 # Machine Learning
-tensorflow==2.15.0
-torch==2.1.1
+tensorflow
+torch
 xgboost==2.0.3
 
 # Utilities

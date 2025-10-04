@@ -27,7 +27,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
 # Security scheme
-security = HTTPBearer()
+security = HTTPBearer(auto_error=False)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a password against its hash"""
@@ -69,16 +69,26 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
     """Authenticate user with username and password"""
     user = db.query(User).filter(User.username == username).first()
     if not user:
+        print(f"DEBUG: authenticate_user: User '{username}' not found.") # DEBUG LOG
         return None
-    if not verify_password(password, user.hashed_password):
+    
+    print(f"DEBUG: authenticate_user: Found user '{user.username}'. Stored hash: {user.hashed_password}") # DEBUG LOG
+    
+    password_verified = verify_password(password, user.hashed_password)
+    print(f"DEBUG: authenticate_user: Password verification result for '{username}': {password_verified}") # DEBUG LOG
+
+    if not password_verified:
         return None
     return user
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
     db: Session = Depends(get_db)
 ) -> Optional[User]:
-    """Get current authenticated user from JWT token"""
+    """Get current authenticated user from JWT token (optional)"""
+    if not credentials:
+        return None
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -106,6 +116,8 @@ def get_current_user(
 
 def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
     """Get current active user"""
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
