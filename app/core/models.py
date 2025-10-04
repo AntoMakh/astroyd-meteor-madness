@@ -3,13 +3,12 @@ Enhanced database models for user management, authentication, and persistence
 """
 
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, ForeignKey, JSON
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime
 import uuid
 
-Base = declarative_base()
+from app.core.database import Base
 
 class User(Base):
     """User model for authentication and profile management"""
