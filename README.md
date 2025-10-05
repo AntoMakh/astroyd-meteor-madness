@@ -9,7 +9,7 @@ A comprehensive backend system for simulating meteor impacts with real NASA data
 - **NASA Data Integration**: Real-time data from NASA APIs and Earth observation systems
 - **Machine Learning**: Enhanced predictions using historical impact data
 - **Geographic Analysis**: Population density mapping and terrain effects
-- **Multi-Planet Support**: Impact simulations for various planetary bodies
+- **Multi-Planet Support**: Impact simulations on Earth for various asteroids
 - **Gamified Mitigation Strategy System**: Implementation of mitigation strategies in a game-like simulation, with various strategies to implement, and a live global leaderboard
 
 ## NASA Data Sources
