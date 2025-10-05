@@ -66,6 +66,67 @@ cp env.example .env
 echo "NASA_API_KEY=YOUR_KEY" >> .env.local
 ```
 
+## Tech Stack
+
+The project leverages a modern and robust tech stack to ensure high performance, scalability, and maintainability. Below is an overview of the technologies used:
+
+### Core Framework
+- **FastAPI**: A modern, fast (high-performance) web framework for building APIs with Python.
+- **Uvicorn**: A lightning-fast ASGI server implementation for serving FastAPI applications.
+
+### Scientific Computing
+- **NumPy**: For numerical computations and array manipulations.
+- **SciPy**: For advanced scientific and technical computing.
+- **Pandas**: For data manipulation and analysis.
+- **Scikit-learn**: For machine learning and data preprocessing.
+
+### Database
+- **SQLAlchemy**: A SQL toolkit and Object-Relational Mapping (ORM) library.
+- **Alembic**: For database migrations.
+- **PostgreSQL**: A powerful, open-source relational database.
+- **Redis**: An in-memory data structure store used for caching and background tasks.
+
+### Background Tasks
+- **Celery**: A distributed task queue for handling asynchronous tasks.
+
+### HTTP Clients
+- **HTTPX**: For making asynchronous HTTP requests.
+- **Aiohttp**: For asynchronous HTTP client/server handling.
+- **Requests**: For synchronous HTTP requests.
+
+### Geospatial Analysis
+- **GeoPandas**: For working with geospatial data.
+- **Shapely**: For geometric operations.
+- **Rasterio**: For raster data processing.
+- **Folium**: For creating interactive maps.
+
+### Data Processing
+- **Xarray**: For working with labeled multi-dimensional arrays.
+- **NetCDF4**: For working with NetCDF data formats.
+- **H5py**: For interacting with HDF5 data.
+
+### Machine Learning
+- **TensorFlow**: For deep learning and neural networks.
+- **PyTorch**: For machine learning and deep learning tasks.
+- **XGBoost**: For gradient boosting and decision tree-based models.
+
+### Utilities
+- **ReportLab**: For generating PDFs.
+- **Matplotlib**: For data visualization.
+- **Python-dotenv**: For managing environment variables.
+- **Passlib**: For password hashing.
+- **Email-validator**: For validating email addresses.
+
+### Development Tools
+- **Black**: For code formatting.
+- **Isort**: For sorting imports.
+- **Flake8**: For linting Python code.
+- **Mypy**: For static type checking.
+
+### Testing
+- **Pytest**: For unit testing.
+- **Pytest-asyncio**: For testing asynchronous code.
+
 ## Project Structure
 
 ```
