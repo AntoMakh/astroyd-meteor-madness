@@ -12,7 +12,7 @@ export function setupCesiumVisualization(containerId) {
 
 function runCesium(containerId) {
   try {
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1ZGMyMzExNS0yMDA3LTQzOTUtYWI4Zi01MTE1NDVkZjA5MmQiLCJpZCI6MzM4MzI2LCJpYXQiOjE3NTk1ODkyMjB9.mKL-h_yoK40tAU5y0x366QdYPvh_Gb1-slJDDoY-Atk';
+    Cesium.Ion.defaultAccessToken = 'your_cesium_token';
     const viewer = new Cesium.Viewer(containerId, {
       terrain: Cesium.Terrain.fromWorldTerrain(),
       baseLayerPicker: false
