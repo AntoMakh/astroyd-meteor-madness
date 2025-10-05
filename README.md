@@ -50,13 +50,16 @@ Go on:
 localhost:8181/index.html
 
 
-### Environment Variables
+### Environment Variables (IMPORTANT)
 
 Key variables (see `env.example`):
 - `NASA_API_KEY`: Required for live NASA NEO/EPIC APIs; optional in DEMO_MODE
 - `DEMO_MODE`: If true, enables safe fallbacks and demo heuristics
 - `CACHE_TTL_SECONDS`: In-memory cache TTL for NASA client
 - `CORS_ALLOW_ORIGINS`: Comma-separated origins for CORS (e.g., http://localhost:3000)
+
+In cesium-visualization.js, replace your_cesium_token with your CesiumJS token in the "Cesium.Ion.defaultAccessToken" box
+Make sure all keys are added in the .env file and the cesium-visualization.js file.
 
 ### Using Your NASA API Key
 
