@@ -1,5 +1,7 @@
 # NASA Meteor Simulator Backend
 
+## 🥇 NASA Space Apps Finalist Project
+
 A comprehensive backend system for simulating meteor impacts with real NASA data integration.
 
 ## Features
